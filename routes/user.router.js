@@ -1,14 +1,17 @@
 import express from "express";
-import { getUsers, getUserById } from "../controller/user.controller.js";
-import makeCallback from "../utils/handle_callback.js";
+import {
+  get_user,
+  get_user_by_id,
+  change_password,
+  login_user,
+} from "../controller/user.controller.js";
+import make_callback from "../utils/handle_callback.js";
 
-const userRouter = express.Router();
+const user_router = express.Router();
 
-userRouter.get("/", makeCallback(getUsers));
-userRouter.get("/:id", makeCallback(getUserById));
-userRouter.post("/", makeCallback(getUsers));
-userRouter.put("/", makeCallback(getUsers));
-userRouter.put("/", makeCallback(getUsers));
-userRouter.delete("/", makeCallback(getUsers));
+user_router.get("/", make_callback(get_user));
+user_router.get("/:id", make_callback(get_user_by_id));
+user_router.put("/change-password/:id", make_callback(change_password));
+user_router.post("/login", make_callback(login_user));
 
-export default userRouter;
+export default user_router;

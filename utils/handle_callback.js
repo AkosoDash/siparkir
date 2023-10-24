@@ -18,7 +18,7 @@ function parseUserAgent(userAgent) {
  * @param {Function} controller - The controller function to handle the HTTP request.
  * @returns {Function} - An Express callback function for handling requests and responses.
  */
-export default function makeCallback(controller) {
+export default function make_callback(controller) {
   return async (req, res) => {
     try {
       const httpRequest = {
