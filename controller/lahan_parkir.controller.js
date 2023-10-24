@@ -28,6 +28,7 @@ const get_lahan_parkir = async (req, res) => {
     lahan_parkir.forEach((doc) => {
       const lp = new LahanParkir(
         doc.id,
+        doc.data().kd_lahan_parkir,
         doc.data().nama_lahan_parkir,
         doc.data().total_daya_tampung
       );
@@ -52,7 +53,18 @@ const get_lahan_parkir_by_id = async (req, res) => {
 };
 
 const create_lahan_parkir = async (req, res) => {
-  const { nama_lahan_parkir, total_daya_tampung } = req.body;
+  const { kd_lahan_parkir, nama_lahan_parkir, total_daya_tampung } = req.body;
+
+  // Membuat referensi dokumen dengan kunci kd_lahan_parkir
+  const lahan_parkir_ref = collection(db, "lahan_parkir");
+  const queryGet = query(
+    lahan_parkir_ref,
+    where("kd_lahan_parkir", "==", kd_lahan_parkir)
+  );
+  const querySnapshot = await getDocs(queryGet);
+
+  if (querySnapshot.docs[0])
+    throw new error_response("kd_lahan_parkir already used", 400);
 
   if (nama_lahan_parkir === "")
     throw new error_response("nama lahan parkir mustn't be null");
@@ -61,14 +73,17 @@ const create_lahan_parkir = async (req, res) => {
   if (total_daya_tampung === 0)
     throw new error_response("total daya tampung mustn't be zero");
 
-  if (typeof nama_lahan_parkir != "string")
-    throw new error_response("nama lahan parkir must be string");
-  if (typeof total_daya_tampung != "number")
-    throw new error_response("nama lahan parkir must be number");
+  if (typeof nama_lahan_parkir !== "string")
+    throw new error_response("nama lahan parkir must be a string");
+  if (typeof total_daya_tampung !== "number")
+    throw new error_response("total daya tampung must be a number");
 
-  const data = { nama_lahan_parkir, total_daya_tampung };
+  const data = { kd_lahan_parkir, nama_lahan_parkir, total_daya_tampung };
   await addDoc(collection(db, "lahan_parkir"), data);
-  return success_response({ data, message: "lahan_parkir" });
+  return success_response({
+    data,
+    message: "lahan_parkir created successfully",
+  });
 };
 
 const update_lahan_parkir = async (req, res) => {

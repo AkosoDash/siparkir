@@ -91,15 +91,15 @@ const login_user = async (req, res) => {
 
   if (querySnapshot.empty) {
     throw new error_response("User not found", 404);
-  } else {
-    const userDoc = querySnapshot.docs[0];
-    const userData = userDoc.data();
-    if (userData.password === password) {
-      return success_response({ data: userData });
-    } else {
-      throw new error_response("Invalid password");
-    }
   }
+  const userDoc = querySnapshot.docs[0];
+  const userData = userDoc.data();
+
+  if (userData.password !== password) {
+    throw new error_response("Invalid password");
+  }
+
+  return success_response({ data: userData });
 };
 
 export { get_user, get_user_by_id, change_password, login_user };
