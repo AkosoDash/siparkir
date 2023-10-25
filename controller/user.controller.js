@@ -82,17 +82,17 @@ const change_password = async (req, res) => {
 
 const login_user = async (req, res) => {
   const { username, password } = req.body;
-  const usersRef = collection(db, "users");
+  const user_ref = collection(db, "users");
 
   // Membuat query untuk mencari pengguna dengan username yang cocok
-  const queryGet = query(usersRef, where("username", "==", username));
+  const query_get = query(user_ref, where("username", "==", username));
 
-  const querySnapshot = await getDocs(queryGet);
+  const query_snapshot = await getDocs(query_get);
 
-  if (querySnapshot.empty) {
+  if (query_snapshot.empty) {
     throw new error_response("User not found", 404);
   }
-  const userDoc = querySnapshot.docs[0];
+  const userDoc = query_snapshot.docs[0];
   const userData = userDoc.data();
 
   if (userData.password !== password) {
