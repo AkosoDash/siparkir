@@ -1,8 +1,8 @@
 class LogParkir {
-  constructor(id, kd_lahan_parkir, tanggal_parkir, status) {
+  constructor(id, kdLahanParkir, tanggalParkir, status) {
     (this.id = id),
-      (this.kd_lahan_parkir = kd_lahan_parkir),
-      (this.tanggal_parkir = tanggal_parkir),
+      (this.kdLahanParkir = kdLahanParkir),
+      (this.tanggalParkir = tanggalParkir),
       (this.status = status);
   }
 }

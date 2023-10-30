@@ -19,7 +19,7 @@ import {
 const db = getFirestore(connection);
 
 const get_lahan_parkir = async (req, res) => {
-  const lahan_parkir = await getDocs(collection(db, "lahan_parkir"));
+  const lahan_parkir = await getDocs(collection(db, "tb_lahanparkir"));
   const lahan_parkir_array = [];
 
   if (lahan_parkir.empty) {
@@ -28,9 +28,9 @@ const get_lahan_parkir = async (req, res) => {
     lahan_parkir.forEach((doc) => {
       const lp = new LahanParkir(
         doc.id,
-        doc.data().kd_lahan_parkir,
-        doc.data().nama_lahan_parkir,
-        doc.data().total_daya_tampung
+        doc.data().kdLahanParkir,
+        doc.data().namaLahanParkir,
+        doc.data().totalDayaTampung
       );
       lahan_parkir_array.push(lp);
     });
@@ -41,7 +41,7 @@ const get_lahan_parkir = async (req, res) => {
 
 const get_lahan_parkir_by_id = async (req, res) => {
   const { id } = req.params;
-  const lahan_parkir = doc(db, "lahan_parkir", id);
+  const lahan_parkir = doc(db, "tb_lahanparkir", id);
   const data = await getDoc(lahan_parkir);
 
   if (!data.exists()) {
@@ -53,33 +53,33 @@ const get_lahan_parkir_by_id = async (req, res) => {
 };
 
 const create_lahan_parkir = async (req, res) => {
-  const { kd_lahan_parkir, nama_lahan_parkir, total_daya_tampung } = req.body;
+  const { kdLahanParkir, namaLahanParkir, totalDayaTampung } = req.body;
 
-  // Membuat referensi dokumen dengan kunci kd_lahan_parkir
-  const lahan_parkir_ref = collection(db, "lahan_parkir");
+  // Membuat referensi dokumen dengan kunci kdLahanParkir
+  const lahan_parkir_ref = collection(db, "tb_lahanparkir");
   const queryGet = query(
     lahan_parkir_ref,
-    where("kd_lahan_parkir", "==", kd_lahan_parkir)
+    where("kdLahanParkir", "==", kdLahanParkir)
   );
   const querySnapshot = await getDocs(queryGet);
 
   if (querySnapshot.docs[0])
-    throw new error_response("kd_lahan_parkir already used", 400);
+    throw new error_response("kdLahanParkir already used", 400);
 
-  if (nama_lahan_parkir === "")
+  if (namaLahanParkir === "")
     throw new error_response("nama lahan parkir mustn't be null");
-  if (total_daya_tampung === "")
+  if (totalDayaTampung === "")
     throw new error_response("total daya tampung mustn't be null");
-  if (total_daya_tampung === 0)
+  if (totalDayaTampung === 0)
     throw new error_response("total daya tampung mustn't be zero");
 
-  if (typeof nama_lahan_parkir !== "string")
+  if (typeof namaLahanParkir !== "string")
     throw new error_response("nama lahan parkir must be a string");
-  if (typeof total_daya_tampung !== "number")
+  if (typeof totalDayaTampung !== "number")
     throw new error_response("total daya tampung must be a number");
 
-  const data = { kd_lahan_parkir, nama_lahan_parkir, total_daya_tampung };
-  await addDoc(collection(db, "lahan_parkir"), data);
+  const data = { kdLahanParkir, namaLahanParkir, totalDayaTampung };
+  await addDoc(collection(db, "tb_lahanparkir"), data);
   return success_response({
     data,
     message: "lahan_parkir created successfully",
@@ -89,29 +89,29 @@ const create_lahan_parkir = async (req, res) => {
 const update_lahan_parkir = async (req, res) => {
   const { params, body } = req;
   const { id } = params;
-  const { nama_lahan_parkir, total_daya_tampung } = body;
+  const { namaLahanParkir, totalDayaTampung } = body;
 
-  const lahan_parkir = doc(db, "lahan_parkir", id);
+  const lahan_parkir = doc(db, "tb_lahanparkir", id);
   const data = await getDoc(lahan_parkir);
 
   if (!data.exists()) throw new error_response("lahan parkir not found", 404);
 
   const update_data = data.data();
 
-  if (nama_lahan_parkir === "")
+  if (namaLahanParkir === "")
     throw new error_response("nama lahan parkir mustn't be null");
-  if (total_daya_tampung === "")
+  if (totalDayaTampung === "")
     throw new error_response("total daya tampung mustn't be null");
-  if (total_daya_tampung === 0)
+  if (totalDayaTampung === 0)
     throw new error_response("total daya tampung mustn't be zero");
 
-  if (typeof nama_lahan_parkir != "string")
+  if (typeof namaLahanParkir != "string")
     throw new error_response("nama lahan parkir must be string");
-  if (typeof total_daya_tampung != "number")
+  if (typeof totalDayaTampung != "number")
     throw new error_response("nama lahan parkir must be number");
 
-  update_data.nama_lahan_parkir = nama_lahan_parkir;
-  update_data.total_daya_tampung = total_daya_tampung;
+  update_data.namaLahanParkir = namaLahanParkir;
+  update_data.totalDayaTampung = totalDayaTampung;
 
   await updateDoc(lahan_parkir, update_data);
   return success_response({ message: "data updated successfully" });
@@ -120,12 +120,12 @@ const update_lahan_parkir = async (req, res) => {
 const delete_lahan_parkir = async (req, res) => {
   const { id } = req.params;
 
-  const lahan_parkir = doc(db, "lahan_parkir", id);
+  const lahan_parkir = doc(db, "tb_lahanparkir", id);
   const data = await getDoc(lahan_parkir);
 
   if (!data.exists()) throw new error_response("lahan parkir not found", 404);
 
-  await deleteDoc(doc(db, "lahan_parkir", id));
+  await deleteDoc(doc(db, "tb_lahanparkir", id));
   return success_response({ message: "product deleted successfully" });
 };
 

@@ -17,7 +17,7 @@ import {
 const db = getFirestore(connection);
 
 const get_user = async (req, res) => {
-  const users = await getDocs(collection(db, "users"));
+  const users = await getDocs(collection(db, "tb_user"));
   const users_array = [];
 
   if (users.empty) {
@@ -39,7 +39,7 @@ const get_user = async (req, res) => {
 
 const get_user_by_id = async (req, res) => {
   const { id } = req.params;
-  const user = doc(db, "users", id);
+  const user = doc(db, "tb_user", id);
   const data = await getDoc(user);
 
   if (!data.exists()) {
@@ -55,7 +55,7 @@ const change_password = async (req, res) => {
   const { id } = params;
   const { old_password, new_password, retype_password } = body;
 
-  const user = doc(db, "users", id);
+  const user = doc(db, "tb_user", id);
   const data = await getDoc(user);
 
   if (!data.exists()) throw new error_response("user not found", 404);
@@ -82,7 +82,7 @@ const change_password = async (req, res) => {
 
 const login_user = async (req, res) => {
   const { username, password } = req.body;
-  const user_ref = collection(db, "users");
+  const user_ref = collection(db, "tb_user");
 
   // Membuat query untuk mencari pengguna dengan username yang cocok
   const query_get = query(user_ref, where("username", "==", username));

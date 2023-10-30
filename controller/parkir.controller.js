@@ -20,17 +20,17 @@ import {
 const db = getFirestore(connection);
 
 const get_data_parkir = async (req, res) => {
-  const { kd_lahan_parkir } = req.params;
+  const { kdLahanParkir } = req.params;
   const { status } = req.query;
-  const log_parkir = collection(db, "log_parkir");
+  const log_parkir = collection(db, "tb_logParkir");
   const query_get =
     status !== undefined
       ? query(
           log_parkir,
-          where("kd_lahan_parkir", "==", kd_lahan_parkir),
+          where("kdLahanParkir", "==", kdLahanParkir),
           where("status", "==", status)
         )
-      : query(log_parkir, where("kd_lahan_parkir", "==", kd_lahan_parkir));
+      : query(log_parkir, where("kdLahanParkir", "==", kdLahanParkir));
 
   const log_parkir_array = [];
 
@@ -43,8 +43,8 @@ const get_data_parkir = async (req, res) => {
   query_snapshot.forEach((doc) => {
     const parkir = new LogParkir(
       doc.id,
-      doc.data().kd_lahan_parkir,
-      doc.data().tanggal_parkir,
+      doc.data().kdLahanParkir,
+      doc.data().tanggalParkir,
       doc.data().status
     );
     log_parkir_array.push(parkir);
@@ -54,11 +54,11 @@ const get_data_parkir = async (req, res) => {
 };
 
 const get_data_parkir_by_id = async (req, res) => {
-  const { kd_lahan_parkir, id_parkir } = req.params;
-  const log_parkir = collection(db, "log_parkir");
+  const { kdLahanParkir, id_parkir } = req.params;
+  const log_parkir = collection(db, "tb_logParkir");
   const query_get = query(
     log_parkir,
-    where("kd_lahan_parkir", "==", kd_lahan_parkir)
+    where("kdLahanParkir", "==", kdLahanParkir)
   );
 
   const log_parkir_array = [];
@@ -73,8 +73,8 @@ const get_data_parkir_by_id = async (req, res) => {
     if (doc.id === id_parkir) {
       const parkir = new LogParkir(
         doc.id,
-        doc.data().kd_lahan_parkir,
-        doc.data().tanggal_parkir,
+        doc.data().kdLahanParkir,
+        doc.data().tanggalParkir,
         doc.data().status
       );
       log_parkir_array.push(parkir);
@@ -84,17 +84,18 @@ const get_data_parkir_by_id = async (req, res) => {
 };
 
 const guest_in = async (req, res) => {
-  const { kd_lahan_parkir } = req.params;
-  const lahan_parkir_ref = collection(db, "lahan_parkir");
+  const { kdLahanParkir } = req.params;
+  console.log(kdLahanParkir);
+  const lahan_parkir_ref = collection(db, "tb_lahanparkir");
   const log_data = {
-    kd_lahan_parkir: kd_lahan_parkir,
-    tanggal_parkir: getCurrentDate(),
+    kdLahanParkir: kdLahanParkir,
+    tanggalParkir: getCurrentDate(),
     status: "parkir",
   };
 
   const query_get = query(
     lahan_parkir_ref,
-    where("kd_lahan_parkir", "==", kd_lahan_parkir)
+    where("kdLahanParkir", "==", kdLahanParkir)
   );
 
   const query_snapshot = await getDocs(query_get);
@@ -106,9 +107,9 @@ const guest_in = async (req, res) => {
   const doc_ref = query_snapshot.docs[0].ref;
   const doc_data = query_snapshot.docs[0].data();
 
-  doc_data.total_daya_tampung = doc_data.total_daya_tampung - 1;
+  doc_data.totalDayaTampung = doc_data.totalDayaTampung - 1;
 
-  await addDoc(collection(db, "log_parkir"), log_data);
+  await addDoc(collection(db, "tb_logParkir"), log_data);
   await updateDoc(doc_ref, doc_data);
 
   return success_response({
@@ -118,17 +119,17 @@ const guest_in = async (req, res) => {
 };
 
 const guest_out = async (req, res) => {
-  const { kd_lahan_parkir } = req.params;
-  const lahan_parkir_ref = collection(db, "lahan_parkir");
+  const { kdLahanParkir } = req.params;
+  const lahan_parkir_ref = collection(db, "tb_lahanparkir");
   const log_data = {
-    kd_lahan_parkir: kd_lahan_parkir,
-    tanggal_parkir: getCurrentDate(),
+    kdLahanParkir: kdLahanParkir,
+    tanggalParkir: getCurrentDate(),
     status: "keluar",
   };
 
   const query_get = query(
     lahan_parkir_ref,
-    where("kd_lahan_parkir", "==", kd_lahan_parkir)
+    where("kdLahanParkir", "==", kdLahanParkir)
   );
 
   const query_snapshot = await getDocs(query_get);
@@ -140,9 +141,9 @@ const guest_out = async (req, res) => {
   const doc_ref = query_snapshot.docs[0].ref;
   const doc_data = query_snapshot.docs[0].data();
 
-  doc_data.total_daya_tampung = doc_data.total_daya_tampung + 1;
+  doc_data.totalDayaTampung = doc_data.totalDayaTampung + 1;
 
-  await addDoc(collection(db, "log_parkir"), log_data);
+  await addDoc(collection(db, "tb_logParkir"), log_data);
   await updateDoc(doc_ref, doc_data);
 
   return success_response({

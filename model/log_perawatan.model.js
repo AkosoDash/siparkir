@@ -1,18 +1,22 @@
 class LogPerawatan {
   constructor(
     id,
+    kdPerawatan,
     username,
-    kd_alat,
-    tanggal_perawatan,
+    kdAlat,
+    tanggalPerawatan,
     keterangan,
-    nama_pengecek
+    namaPengecek,
+    linkFotoMaintenance
   ) {
     (this.id = id),
+      (this.kdPerawatan = kdPerawatan),
       (this.username = username),
-      (this.kd_alat = kd_alat),
-      (this.tanggal_perawatan = tanggal_perawatan),
+      (this.kdAlat = kdAlat),
+      (this.tanggalPerawatan = tanggalPerawatan),
       (this.keterangan = keterangan),
-      (this.nama_pengecek = nama_pengecek);
+      (this.namaPengecek = namaPengecek),
+      (this.linkFotoMaintenance = linkFotoMaintenance);
   }
 }
 
