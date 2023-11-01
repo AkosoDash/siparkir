@@ -120,7 +120,15 @@ const create_log_perawatan = async (req, res) => {
 const update_log_perawatan = async (req, res) => {
   const { params, body } = req;
   const { id } = params;
-  const { nama_log_perawatan, total_daya_tampung } = body;
+  const {
+    kdPerawatan,
+    username,
+    kdAlat,
+    tanggalPerawatan,
+    keterangan,
+    namaPengecek,
+    linkFotoMaintenance,
+  } = body;
 
   const log_perawatan = doc(db, "tb_perawatan", id);
   const data = await getDoc(log_perawatan);
@@ -129,20 +137,40 @@ const update_log_perawatan = async (req, res) => {
 
   const update_data = data.data();
 
-  if (nama_log_perawatan === "")
-    throw new error_response("nama log perawatan mustn't be null");
-  if (total_daya_tampung === "")
-    throw new error_response("total daya tampung mustn't be null");
-  if (total_daya_tampung === 0)
-    throw new error_response("total daya tampung mustn't be zero");
+  if (kdPerawatan === "")
+    throw new error_response("kdPerawatan mustn't be null");
+  if (username === "") throw new error_response("username mustn't be null");
+  if (kdAlat === "") throw new error_response("kdAlat mustn't be null");
+  if (tanggalPerawatan === "")
+    throw new error_response("tanggalPerawatan mustn't be null");
+  if (keterangan === "") throw new error_response("keterangan mustn't be null");
+  if (namaPengecek === "")
+    throw new error_response("namaPengecek mustn't be null");
+  if (linkFotoMaintenance === "")
+    throw new error_response("linkFotoMaintenance mustn't be null");
 
-  if (typeof nama_log_perawatan != "string")
-    throw new error_response("nama log perawatan must be string");
-  if (typeof total_daya_tampung != "number")
-    throw new error_response("nama log perawatan must be number");
+  if (typeof kdPerawatan != "string")
+    throw new error_response("kdPerawatan must be string");
+  if (typeof username != "string")
+    throw new error_response("username must be number");
+  if (typeof kdAlat != "string")
+    throw new error_response("kdAlat must be number");
+  if (typeof tanggalPerawatan != "string")
+    throw new error_response("tanggalPerawatan must be number");
+  if (typeof keterangan != "string")
+    throw new error_response("keterangan must be number");
+  if (typeof namaPengecek != "string")
+    throw new error_response("namaPengecek must be number");
+  if (typeof linkFotoMaintenance != "string")
+    throw new error_response("linkFotoMaintenance must be number");
 
-  update_data.nama_log_perawatan = nama_log_perawatan;
-  update_data.total_daya_tampung = total_daya_tampung;
+  update_data.kdPerawatan = kdPerawatan;
+  update_data.username = username;
+  update_data.kdAlat = kdAlat;
+  update_data.tanggalPerawatan = tanggalPerawatan;
+  update_data.keterangan = keterangan;
+  update_data.namaPengecek = namaPengecek;
+  update_data.linkFotoMaintenance = linkFotoMaintenance;
 
   await updateDoc(log_perawatan, update_data);
   return success_response({ message: "data updated successfully" });
