@@ -11,9 +11,9 @@ import make_callback from "../utils/handle_callback.js";
 const alat_iot = express.Router();
 
 alat_iot.get("/", make_callback(get_alat_iot));
-alat_iot.get("/:kdAlat/", make_callback(get_alat_iot_by_id));
+alat_iot.get("/:id/", make_callback(get_alat_iot_by_id));
 alat_iot.post("/", make_callback(create_alat_iot));
-alat_iot.put("/:kdAlat/", make_callback(update_alat_iot));
-alat_iot.delete("/:kdAlat/", make_callback(delete_alat_iot));
+alat_iot.put("/:id/", make_callback(update_alat_iot));
+alat_iot.delete("/:id/", make_callback(delete_alat_iot));
 
 export default alat_iot;

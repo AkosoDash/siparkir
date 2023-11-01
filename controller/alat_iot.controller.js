@@ -49,7 +49,7 @@ const get_alat_iot_by_id = async (req, res) => {
   const data = await getDoc(alat_iot);
 
   if (!data.exists()) {
-    throw new error_response("log perawatan not found", 404);
+    throw new error_response("alat iot not found", 404);
   } else {
     const alat_iot_found = data.data();
     return success_response({ data: alat_iot_found });
@@ -115,29 +115,51 @@ const create_alat_iot = async (req, res) => {
 const update_alat_iot = async (req, res) => {
   const { params, body } = req;
   const { id } = params;
-  const { nama_alat_iot, total_daya_tampung } = body;
+  const {
+    kdAlat,
+    kdLahanParkir,
+    tanggalPasang,
+    terakhirMaintenance,
+    jadwalMaintenance,
+    statusAlat,
+    namaLahanParkir,
+  } = body;
 
   const alat_iot = doc(db, "tb_alatIot", id);
   const data = await getDoc(alat_iot);
 
-  if (!data.exists()) throw new error_response("log perawatan not found", 404);
+  if (!data.exists()) throw new error_response("alat iot not found", 404);
 
   const update_data = data.data();
 
-  if (nama_alat_iot === "")
-    throw new error_response("nama log perawatan mustn't be null");
-  if (total_daya_tampung === "")
-    throw new error_response("total daya tampung mustn't be null");
-  if (total_daya_tampung === 0)
-    throw new error_response("total daya tampung mustn't be zero");
+  if (tanggalPasang === "")
+    throw new error_response("tanggalPasang mustn't be null");
+  if (terakhirMaintenance === "")
+    throw new error_response("terakhirMaintenance mustn't be null");
+  if (jadwalMaintenance === "")
+    throw new error_response("jadwalMaintenance mustn't be null");
+  if (statusAlat === "") throw new error_response("statusAlat mustn't be null");
+  if (namaLahanParkir === "")
+    throw new error_response("namaLahanParkir mustn't be null");
 
-  if (typeof nama_alat_iot != "string")
-    throw new error_response("nama log perawatan must be string");
-  if (typeof total_daya_tampung != "number")
-    throw new error_response("nama log perawatan must be number");
+  if (typeof tanggalPasang !== "string")
+    throw new error_response("tanggalPasang must be a string");
+  if (typeof terakhirMaintenance !== "string")
+    throw new error_response("terakhirMaintenance must be a string");
+  if (typeof jadwalMaintenance !== "string")
+    throw new error_response("jadwalMaintenance must be a string");
+  if (typeof statusAlat !== "string")
+    throw new error_response("statusAlat must be a string");
+  if (typeof namaLahanParkir !== "string")
+    throw new error_response("namaLahanParkir must be a string");
 
-  update_data.nama_alat_iot = nama_alat_iot;
-  update_data.total_daya_tampung = total_daya_tampung;
+  update_data.kdAlat = kdAlat;
+  update_data.kdLahanParkir = kdLahanParkir;
+  update_data.tanggalPasang = tanggalPasang;
+  update_data.terakhirMaintenance = terakhirMaintenance;
+  update_data.jadwalMaintenance = jadwalMaintenance;
+  update_data.statusAlat = statusAlat;
+  update_data.namaLahanParkir = namaLahanParkir;
 
   await updateDoc(alat_iot, update_data);
   return success_response({ message: "data updated successfully" });
@@ -149,10 +171,10 @@ const delete_alat_iot = async (req, res) => {
   const alat_iot = doc(db, "tb_alatIot", id);
   const data = await getDoc(alat_iot);
 
-  if (!data.exists()) throw new error_response("log perawatan not found", 404);
+  if (!data.exists()) throw new error_response("alat iot not found", 404);
 
   await deleteDoc(doc(db, "tb_alatIot", id));
-  return success_response({ message: "product deleted successfully" });
+  return success_response({ message: "data deleted successfully" });
 };
 
 export {
