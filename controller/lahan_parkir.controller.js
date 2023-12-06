@@ -100,7 +100,7 @@ const create_lahan_parkir = async (req, res) => {
 const update_lahan_parkir = async (req, res) => {
   const { params, body } = req;
   const { id } = params;
-  const { namaLahanParkir, totalDayaTampung } = body;
+  const { namaLahanParkir, totalDayaTampung, sisaTotalDayaTampung } = body;
 
   const lahan_parkir = doc(db, "tb_lahanparkir", id);
   const data = await getDoc(lahan_parkir);
@@ -123,8 +123,9 @@ const update_lahan_parkir = async (req, res) => {
 
   update_data.namaLahanParkir = namaLahanParkir;
   update_data.totalDayaTampung = totalDayaTampung;
+  update_data.sisaTotalDayaTampung = sisaTotalDayaTampung;
 
-  await updateDoc(lahan_parkir, update_data);
+  await updateDoc(lahan_parkir, update_data, sisaTotalDayaTampung);
   return success_response({ message: "data updated successfully" });
 };
 

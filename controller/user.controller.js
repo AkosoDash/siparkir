@@ -82,11 +82,11 @@ const change_password = async (req, res) => {
 };
 
 const login_user = async (req, res) => {
-  const { username, password } = req.body;
+  const { email, password } = req.body;
   const user_ref = collection(db, "tb_user");
 
   // Membuat query untuk mencari pengguna dengan username yang cocok
-  const query_get = query(user_ref, where("username", "==", username));
+  const query_get = query(user_ref, where("email", "==", email));
 
   const query_snapshot = await getDocs(query_get);
 
