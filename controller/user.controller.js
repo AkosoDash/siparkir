@@ -2,7 +2,7 @@ import success_response from "../utils/success_response.js";
 import { error_response } from "../utils/error_response.js";
 import User from "../model/user.model.js";
 import connection from "../database/connection.js";
-import bodyParser from "body-parser";
+// import bodyParser from "body-parser";
 import {
   getFirestore,
   collection,
@@ -26,9 +26,10 @@ const get_user = async (req, res) => {
     users.forEach((doc) => {
       const user = new User(
         doc.id,
-        doc.data().name,
+        doc.data().email,
         doc.data().username,
-        doc.data().password
+        doc.data().password,
+        doc.data().level
       );
       users_array.push(user);
     });
