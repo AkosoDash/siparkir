@@ -1,9 +1,16 @@
 class LahanParkir {
-  constructor(id, kdLahanParkir, namaLahanParkir, totalDayaTampung) {
+  constructor(
+    id,
+    kdLahanParkir,
+    namaLahanParkir,
+    totalDayaTampung,
+    sisaTotalDayaTampung
+  ) {
     (this.id = id),
       (this.kdLahanParkir = kdLahanParkir),
       (this.namaLahanParkir = namaLahanParkir),
-      (this.totalDayaTampung = totalDayaTampung);
+      (this.totalDayaTampung = totalDayaTampung),
+      (this.sisaTotalDayaTampung = sisaTotalDayaTampung);
   }
 }
 

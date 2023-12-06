@@ -107,7 +107,7 @@ const guest_in = async (req, res) => {
   const doc_ref = query_snapshot.docs[0].ref;
   const doc_data = query_snapshot.docs[0].data();
 
-  doc_data.totalDayaTampung = doc_data.totalDayaTampung - 1;
+  doc_data.sisaTotalDayaTampung = doc_data.sisaTotalDayaTampung - 1;
 
   await addDoc(collection(db, "tb_logParkir"), log_data);
   await updateDoc(doc_ref, doc_data);
@@ -141,7 +141,7 @@ const guest_out = async (req, res) => {
   const doc_ref = query_snapshot.docs[0].ref;
   const doc_data = query_snapshot.docs[0].data();
 
-  doc_data.totalDayaTampung = doc_data.totalDayaTampung + 1;
+  doc_data.sisaTotalDayaTampung = doc_data.sisaTotalDayaTampung + 1;
 
   await addDoc(collection(db, "tb_logParkir"), log_data);
   await updateDoc(doc_ref, doc_data);

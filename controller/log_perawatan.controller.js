@@ -185,7 +185,7 @@ const delete_log_perawatan = async (req, res) => {
   if (!data.exists()) throw new error_response("log perawatan not found", 404);
 
   await deleteDoc(doc(db, "tb_perawatan", id));
-  return success_response({ message: "product deleted successfully" });
+  return success_response({ message: "data deleted successfully" });
 };
 
 export {

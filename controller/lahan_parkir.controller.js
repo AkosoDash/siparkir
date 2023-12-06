@@ -30,7 +30,8 @@ const get_lahan_parkir = async (req, res) => {
         doc.id,
         doc.data().kdLahanParkir,
         doc.data().namaLahanParkir,
-        doc.data().totalDayaTampung
+        doc.data().totalDayaTampung,
+        doc.data().sisaTotalDayaTampung
       );
       lahan_parkir_array.push(lp);
     });
@@ -53,7 +54,12 @@ const get_lahan_parkir_by_id = async (req, res) => {
 };
 
 const create_lahan_parkir = async (req, res) => {
-  const { kdLahanParkir, namaLahanParkir, totalDayaTampung } = req.body;
+  const {
+    kdLahanParkir,
+    namaLahanParkir,
+    totalDayaTampung,
+    sisaTotalDayaTampung,
+  } = req.body;
 
   // Membuat referensi dokumen dengan kunci kdLahanParkir
   const lahan_parkir_ref = collection(db, "tb_lahanparkir");
@@ -78,7 +84,12 @@ const create_lahan_parkir = async (req, res) => {
   if (typeof totalDayaTampung !== "number")
     throw new error_response("total daya tampung must be a number");
 
-  const data = { kdLahanParkir, namaLahanParkir, totalDayaTampung };
+  const data = {
+    kdLahanParkir,
+    namaLahanParkir,
+    totalDayaTampung,
+    sisaTotalDayaTampung,
+  };
   await addDoc(collection(db, "tb_lahanparkir"), data);
   return success_response({
     data,
